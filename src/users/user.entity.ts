@@ -12,7 +12,7 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ default: 0 })
   credits: number;
 
   @Column()
