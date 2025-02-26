@@ -12,7 +12,7 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  #generateOTP(): number {
+  private generateOTP(): number {
     return Number(
       Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join(''),
     );
@@ -20,7 +20,7 @@ export class AuthService {
 
   async create(body: CreateEmailDto) {
     const user = await this.usersService.create(body);
-    user.otp = this.#generateOTP();
+    user.otp = this.generateOTP();
     this.repo.save(user);
   }
 }
