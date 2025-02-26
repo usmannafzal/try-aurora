@@ -1,9 +1,15 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UseInterceptors,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-import { CreateEmailDto } from './create-email.dto';
+import { CreateEmailDto } from './dtos/create-email.dto';
 import { UsersService } from '../users/users.service';
+import { ValidateOTPDto } from './dtos/validate-otp.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,5 +28,14 @@ export class AuthService {
     const user = await this.usersService.create(body);
     user.otp = this.generateOTP();
     this.repo.save(user);
+  }
+
+  async validateOTP(body: ValidateOTPDto) {
+    const user = await this.repo.findOne({ where: { email: body.email } });
+    if (!user) throw new NotFoundException();
+
+    if (user.otp !== body.otp)
+      throw new BadRequestException('The OTP is incorrect');
+    else return user;
   }
 }
