@@ -18,7 +18,7 @@ export class User {
   @Column({ default: 0 })
   credits: number;
 
-  @Column()
+  @Column({ nullable: true })
   otp: number;
 
   @CreateDateColumn({ name: 'created_at' })
