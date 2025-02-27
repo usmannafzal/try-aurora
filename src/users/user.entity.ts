@@ -21,6 +21,13 @@ export class User {
   @Column({ nullable: true })
   otp: number;
 
+  @CreateDateColumn({
+    name: 'otp_expires_at',
+    type: 'timestamp',
+    default: () => "CURRENT_TIMESTAMP + INTERVAL '5 minutes'",
+  })
+  otpExpiresAt: Date;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
