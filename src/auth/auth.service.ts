@@ -10,12 +10,14 @@ import { Repository } from 'typeorm';
 import { CreateEmailDto } from './dtos/create-email.dto';
 import { UsersService } from '../users/users.service';
 import { ValidateOTPDto } from './dtos/validate-otp.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private repo: Repository<User>,
     private readonly usersService: UsersService,
+    private jwtService: JwtService,
   ) {}
 
   private generateOTP(): number {
@@ -39,6 +41,12 @@ export class AuthService {
 
     if (user.otp !== body.otp)
       throw new BadRequestException('The OTP is incorrect');
-    else return user;
+
+    const accessToken = await this.jwtService.signAsync({ user });
+
+    return {
+      user,
+      accessToken,
+    };
   }
 }

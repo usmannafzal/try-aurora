@@ -5,15 +5,21 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class ValidateOtpInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((user) => {
+      map((data) => {
+        const user: User = data.user;
         return {
-          statusCode: 201,
-          user,
+          ...data,
+          user: {
+            id: user.id,
+            email: user.email,
+            credits: user.credits,
+          },
         };
       }),
     );
