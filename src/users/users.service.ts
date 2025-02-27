@@ -12,12 +12,14 @@ export class UsersService {
     let user = await this.repo.findOne({ where: { email: body.email } });
     if (user) {
       user.otp = otp;
+      user.otpExpiresAt = new Date(new Date().getTime() + 5 * 60 * 1000);
       return await this.repo.save(user);
     }
 
     user = new User();
     user.email = body.email;
     user.otp = otp;
+    user.otpExpiresAt = new Date(new Date().getTime() + 5 * 60 * 1000);
     return this.repo.save(user);
   }
 }

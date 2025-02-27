@@ -34,7 +34,7 @@ export class AuthService {
     const user = await this.repo.findOne({ where: { email: body.email } });
     if (!user) throw new NotFoundException();
 
-    const now = new Date();
+    const now = new Date(new Date().toISOString());
     const userOTPExpiryTime = new Date(user.otpExpiresAt);
     if (now > userOTPExpiryTime)
       throw new BadRequestException('OTP has been expired');
