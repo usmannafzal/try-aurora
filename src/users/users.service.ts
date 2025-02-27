@@ -8,12 +8,16 @@ import { CreateUserDto } from './dtos/create-user.dto';
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  async create(body: CreateUserDto) {
+  async create(body: CreateUserDto, otp: number) {
     let user = await this.repo.findOne({ where: { email: body.email } });
-    if (user) return user;
+    if (user) {
+      user.otp = otp;
+      return await this.repo.save(user);
+    }
 
     user = new User();
     user.email = body.email;
+    user.otp = otp;
     return this.repo.save(user);
   }
 }

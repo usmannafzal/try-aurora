@@ -25,9 +25,7 @@ export class AuthService {
   }
 
   async create(body: CreateEmailDto) {
-    const user = await this.usersService.create(body);
-    user.otp = this.generateOTP();
-    this.repo.save(user);
+    return this.usersService.create(body, this.generateOTP());
   }
 
   async validateOTP(body: ValidateOTPDto) {
