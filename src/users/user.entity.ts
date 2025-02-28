@@ -28,6 +28,9 @@ export class User {
   })
   otpExpiresAt: Date;
 
+  @Column({ name: 'is_admin', type: 'boolean', default: false })
+  isAdmin: boolean;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
