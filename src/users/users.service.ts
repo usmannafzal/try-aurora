@@ -21,4 +21,6 @@ export class UsersService {
 
     return this.repo.save(user);
   }
+
+  delete(request: Request) {}
 }
