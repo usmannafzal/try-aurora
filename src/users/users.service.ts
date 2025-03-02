@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Param } from '@nestjs/common';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -22,5 +22,16 @@ export class UsersService {
     return this.repo.save(user);
   }
 
-  delete(request: Request) {}
+  async delete(request: any, id: string) {
+    if (!id) throw new BadRequestException('User Id is missing');
+
+    if (id === request.user.id)
+      throw new BadRequestException('User cannot delete its own records');
+
+    const user = await this.repo.findOne({ where: { id: parseInt(id) } });
+    if (!user)
+      throw new BadRequestException("The user with given Id doesn't exists");
+
+    this.repo.softDelete(user);
+  }
 }
