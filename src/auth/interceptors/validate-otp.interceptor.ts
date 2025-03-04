@@ -19,6 +19,7 @@ export class ValidateOtpInterceptor implements NestInterceptor {
             id: user.id,
             email: user.email,
             credits: user.credits,
+            isAdmin: user.isAdmin,
           },
         };
       }),

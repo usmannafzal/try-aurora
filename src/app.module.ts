@@ -11,10 +11,9 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './database/data-source';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { CheckUserTokenMiddleware } from './common/middlewares/check-user-token.middleware';
 import { VerifyAdminMiddleware } from './common/middlewares/verify-admin.middleware';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -25,18 +24,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
     AuthModule,
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          global: true,
-          secret: config.get<string>('JWT_SECRET'),
-          signOptions: { expiresIn: '7d' },
-        };
-      },
-    }),
   ],
-  exports: [JwtModule],
   controllers: [AppController],
   providers: [AppService],
 })
