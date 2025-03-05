@@ -30,6 +30,9 @@ export class UsersService {
     if (!user)
       throw new BadRequestException("The user with given Id doesn't exists");
 
+    if (user?.deletedAt)
+      throw new BadRequestException('The user has already been deleted');
+
     this.repo.softDelete(user.id);
   }
 }
