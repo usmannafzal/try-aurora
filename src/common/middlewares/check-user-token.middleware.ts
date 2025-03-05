@@ -20,9 +20,9 @@ export class CheckUserTokenMiddleware implements NestMiddleware {
     const accessToken = requestHeaders.split(' ')[1];
 
     try {
-      const user = this.jwtService.verify(accessToken);
+      const decoded = this.jwtService.verify(accessToken);
       req.accessToken = accessToken;
-      req.user = user;
+      req.user = decoded.user;
       next();
     } catch (error) {
       return res

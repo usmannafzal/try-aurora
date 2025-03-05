@@ -7,14 +7,16 @@ import {
   Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { Request } from 'express';
+import UsersRequest from './interfaces/UsersRequest.interface';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Delete('delete/:id')
+  @Delete('/:id')
   @HttpCode(HttpStatus.OK)
-  deleteUser(@Req() request: Request, @Param('id') id: string) {
+  deleteUser(@Req() request: UsersRequest, @Param('id') id: string) {
     return this.usersService.delete(request, id);
   }
 }

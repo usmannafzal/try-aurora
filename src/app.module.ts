@@ -32,9 +32,9 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckUserTokenMiddleware)
-      .forRoutes({ path: 'users', method: RequestMethod.ALL });
+      .forRoutes({ path: 'users*', method: RequestMethod.ALL });
     consumer
       .apply(VerifyAdminMiddleware)
-      .forRoutes({ path: 'users', method: RequestMethod.DELETE });
+      .forRoutes({ path: 'users*', method: RequestMethod.ALL });
   }
 }

@@ -23,15 +23,13 @@ export class UsersService {
   }
 
   async delete(request: any, id: string) {
-    if (!id) throw new BadRequestException('User Id is missing');
-
-    if (id === request.user.id)
+    if (parseInt(id) === request.user.id)
       throw new BadRequestException('User cannot delete its own records');
 
     const user = await this.repo.findOne({ where: { id: parseInt(id) } });
     if (!user)
       throw new BadRequestException("The user with given Id doesn't exists");
 
-    this.repo.softDelete(user);
+    this.repo.softDelete(user.id);
   }
 }
