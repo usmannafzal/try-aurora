@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { FileValidationPipe } from './pipes/file-validation.pipe';
 
 @Controller('projects')
 export class ProjectsController {
@@ -14,7 +15,10 @@ export class ProjectsController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
+  create(
+    @UploadedFile(new FileValidationPipe()) file: Express.Multer.File,
+    @Body() body: any,
+  ) {
     console.log(file);
     console.log(body);
   }
