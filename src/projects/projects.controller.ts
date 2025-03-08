@@ -7,19 +7,26 @@ import {
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FileValidationPipe } from './pipes/file-validation.pipe';
+import { diskStorage } from 'multer';
+import { extname, join } from 'path';
+import { FileStorageHelpers } from './helpers/file-storage.helpers';
 
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
-  create(
-    @UploadedFile(new FileValidationPipe()) file: Express.Multer.File,
-    @Body() body: any,
-  ) {
-    console.log(file);
-    console.log(body);
-  }
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: join(__dirname, '..', '..', 'uploads'),
+        filename: (req, file, cb) => {
+          const filename = `${Date.now()}-${file.originalname}`;
+          cb(null, filename);
+        },
+      }),
+      fileFilter: FileStorageHelpers.ValidateFile,
+    }),
+  )
+  create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {}
 }
