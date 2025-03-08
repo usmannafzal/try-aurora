@@ -22,7 +22,10 @@ export class ProjectsController {
       storage: diskStorage({
         destination: join(__dirname, '..', '..', 'uploads'),
         filename: (req, file, cb) => {
-          const filename = `${Date.now()}-${file.originalname}`;
+          const sanitizedFilename = file.originalname
+            .replace(/\s+/g, '-')
+            .replace(/[^a-zA-Z0-9.-]/g, '');
+          const filename = `${Date.now()}-${sanitizedFilename}`;
           cb(null, filename);
         },
       }),
