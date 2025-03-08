@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 
@@ -23,7 +24,9 @@ export class FileStorageHelpers {
       )
     )
       return callback(
-        new Error('Invalid file type! Only JPEG, PNG, and SVG allowed.'),
+        new BadRequestException(
+          'Invalid file type! Only JPEG, PNG, and SVG allowed.',
+        ),
         false,
       );
 
