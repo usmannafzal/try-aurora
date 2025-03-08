@@ -20,4 +20,8 @@ export class ProjectsService {
     });
     return this.repo.save(project);
   }
+
+  getAll() {
+    return this.repo.find();
+  }
 }

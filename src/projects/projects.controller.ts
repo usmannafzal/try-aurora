@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -33,5 +34,10 @@ export class ProjectsController {
   )
   create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
     return this.projectsService.create(file, body);
+  }
+
+  @Get()
+  getAll() {
+    return this.projectsService.getAll();
   }
 }
