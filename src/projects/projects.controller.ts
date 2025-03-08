@@ -31,5 +31,7 @@ export class ProjectsController {
       },
     }),
   )
-  create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {}
+  create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
+    return this.projectsService.create(file, body);
+  }
 }
