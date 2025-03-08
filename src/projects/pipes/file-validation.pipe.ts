@@ -6,18 +6,26 @@ import {
 } from '@nestjs/common';
 import { extname } from 'path';
 
-const validImageExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
-
 @Injectable()
 export class FileValidationPipe implements PipeTransform {
-  transform(value: any, metadata: ArgumentMetadata) {
+  private validImageExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
+
+  private maxSize = 5 * 1024 * 1024;
+
+  transform(file: any, metadata: ArgumentMetadata) {
     if (
-      !validImageExtensions.includes(
-        extname(value?.originalname).replace('.', ''),
+      !this.validImageExtensions.includes(
+        extname(file?.originalname).replace('.', ''),
       )
     )
-      throw new BadRequestException('file is not a valid file');
+      throw new BadRequestException('File is not a valid file');
 
-    return value;
+    if (file.size > this.maxSize) {
+      throw new BadRequestException(
+        `File size exceeds the limit of ${this.maxSize / (1024 * 1024)}MB`,
+      );
+    }
+
+    return file;
   }
 }
