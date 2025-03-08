@@ -15,6 +15,7 @@ export class ProjectsController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {
+    console.log(file);
     console.log(body);
   }
 }
