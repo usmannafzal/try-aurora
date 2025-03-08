@@ -15,8 +15,7 @@ export class FileStorageHelpers {
     };
   }
 
-  static ValidateFile(_req: any, file: any, callback: any) {
-    const maxSize = 5 * 1024 * 1024;
+  static ValidateFile(req: any, file: any, callback: any) {
     const validImageExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
     if (
       !validImageExtensions.includes(
@@ -27,14 +26,7 @@ export class FileStorageHelpers {
         new Error('Invalid file type! Only JPEG, PNG, and SVG allowed.'),
         false,
       );
-    console.log(file.size);
-    if (file.size > maxSize)
-      return callback(
-        new Error(
-          `File size exceeds the limit of ${maxSize / (1024 * 1024)}MB`,
-        ),
-        false,
-      );
+
     return callback(null, true);
   }
 }

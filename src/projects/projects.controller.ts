@@ -26,6 +26,9 @@ export class ProjectsController {
         },
       }),
       fileFilter: FileStorageHelpers.ValidateFile,
+      limits: {
+        fileSize: 5 * 1024 * 1024,
+      },
     }),
   )
   create(@UploadedFile() file: Express.Multer.File, @Body() body: any) {}
