@@ -14,6 +14,7 @@ import { dataSourceOptions } from './database/data-source';
 import { CheckUserTokenMiddleware } from './common/middlewares/check-user-token.middleware';
 import { VerifyAdminMiddleware } from './common/middlewares/verify-admin.middleware';
 import { ConfigModule } from '@nestjs/config';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
     AuthModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
